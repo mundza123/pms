@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>35aspace</title>
+<style>
+:root{--bg:#b7b384;--fg:#fff;--mute:#7a7650;--ph1:#c6c29a;--ph2:#a9a577;--ph3:#b8bb94;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+
+
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;text-transform:lowercase;background:var(--bg);color:var(--fg);font:14px/1.6 "Helvetica Neue",Helvetica,Arial,sans-serif;letter-spacing:.01em}
+a{color:inherit;text-decoration:none}
+a:hover{opacity:.5}
+header{display:flex;justify-content:space-between;padding:20px 24px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5}
+main{max-width:520px;margin:0 auto;padding:0 20px 60px}
+.view{display:none;margin:56px 0}
+body.home #home,body.info #info,body.artist #artist{display:block}
+#home a{display:block;padding:3px 0}
+em{color:var(--mute)}
+.mute{color:var(--mute)}
+.img{aspect-ratio:4/5;width:100%;display:flex;align-items:center;justify-content:center;color:var(--mute);font-size:12px;margin-bottom:14px}
+.a{background:var(--ph1)}.b{background:var(--ph2)}.c{background:var(--ph3)}
+.meta{margin:2px 0 24px}
+.about{margin-top:40px;max-width:440px}
+</style>
+</head>
+<body>
+<header>
+  <a href="#">35a</a>
+  <a href="#info">INFO</a>
+</header>
+<main>
+  <section id="home" class="view"></section>
+  <section id="artist" class="view"></section>
+  <section id="info" class="view">
+    <p>35aspace is a domestic living space gallery. Exhibitions take place in the rooms of a home: on walls, shelves, tables and windowsills.</p>
+    <p>Visits by appointment.<br>Address: hackney, east london<br>Instagram: <a href="https://instagram.com/35aspace" rel="noopener">@35aspace</a></p>
+  </section>
+</main>
+<script>
+/* ===== EDIT YOUR CONTENT HERE =====
+   One block per artist. Set current:true on the artist showing now (only one).
+   images = number of image placeholders (replace with real photos later).
+   id = lowercase letters, numbers and hyphens only. */
+var ARTISTS=[
+ {id:'abida-rahman',name:'abida rahman',current:true,show:'Exhibition title one',date:'11.18.26',room:'Living Room',images:3,
+  about:'A short text about the artist and the show goes here. Two or three sentences about the work and how it was installed in the home.'},
+ {id:'mario-marques',name:'mario marques',show:'Exhibition title two',date:'11.02.26',room:'Kitchen',images:2,
+  about:'About this artist and their show.'},
+ {id:'sarah-washington',name:'sarah washington',show:'Exhibition title three',date:'10.15.26',room:'Hallway',images:3,
+  about:'About this artist and their show.'},
+ {id:'nathan-dyers',name:'nathan dyers',show:'Exhibition title four',date:'09.24.26',room:'Bedroom',images:2,
+  about:'About this artist and their show.'}
+];
+/* ===== END CONTENT ===== */
+
+var tones=['a','b','c'];
+function route(){
+ var h=location.hash.slice(1),b=document.body;
+ var art=ARTISTS.filter(function(x){return x.id===h})[0];
+ var view=h==='info'?'info':(art?'artist':'home');
+ b.className=view;
+ if(view==='home'){
+  document.getElementById('home').innerHTML=ARTISTS.map(function(x){
+   return '<a href="#'+x.id+'">'+x.name+(x.current?' <em>(current)</em>':'')+'</a>';
+  }).join('');
+ }
+ if(art){
+  var html='<p><a href="#" class="mute">\u2190 BACK</a></p><p>'+art.name+(art.current?' <em>(current)</em>':'')+'</p>'
+   +'<p class="meta">'+art.show+'<br><span class="mute">'+art.date+' \u00b7 '+art.room+'</span></p>';
+  for(var k=0;k<art.images;k++)html+='<div class="img '+tones[k%3]+'">install image</div>';
+  html+='<div class="about"><div class="mute">ABOUT</div><p>'+art.about+'</p></div>';
+  document.getElementById('artist').innerHTML=html;
+ }
+ window.scrollTo(0,0);
+}
+addEventListener('hashchange',route);route();
+</script>
+</body>
+</html>
